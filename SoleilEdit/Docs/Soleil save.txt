@@ -1,0 +1,80 @@
+Save information for Soleil (Mega Drive)
+
+Save structure (big-endian):
+0x0000 - 1st slot
+0x1000 - 2nd slot
+0x2000 - 3rd slot
+0x3000 - 4th slot
+
+Slot structure:
+0x005 - Active slot signature (ASCII: RAGN)
+0x019 - 1st ability flags hi
+0x01B - 1st ability flags lo
+0x01D - 2nd ability flags hi
+0x01F - 2nd ability flags lo
+0x095 - First letter of the name (max 10 letters)
+0x0C1 - Maximum health hi
+0x0C3 - Maximum health lo
+0x0C5 - Current health hi
+0x0C7 - Current health lo
+0x0CD - Coins hi
+0x0CF - Coins lo
+0x0DD - 2nd Animal flags hi
+0x0DF - 2nd Animal flags lo
+0x0E1 - 1st Animal flags hi
+0x0E3 - 1st Animal flags lo
+0x0FD - Inventory flags hi
+0x0FF - Inventory flags lo
+0x155 - Checksum hi
+0x157 - Checksum lo
+
+1st ability flags structure:
+Bit 00 - Human/Animal speech
+Bit 08 - Rafflesia entrance permission
+Bit 11 - Sword throwing
+Bit 14 - Cleared beginner course
+
+2nd ability flags structure:
+Bit 01 - Strenght (lift objects)
+Bit 11 - Jump
+
+1st animal flags structure:
+Bit 00 - Save option (restores itself on it's own, useless)
+Bit 01 - Take off A animal option
+Bit 02 - Take off B animal option
+Bit 03 - Get all animals (debug option)
+Bit 04 - Soft reset (debug option)
+Bit 05 - Kitty
+Bit 06 - Johnny
+Bit 07 - Moa
+Bit 08 - Lion
+Bit 09 - Penguy
+Bit 10 - Charlie
+Bit 11 - Dinosaur
+Bit 12 - Dodo
+Bit 13 - Leviathan
+Bit 14 - RaccoonDog
+Bit 15 - Ciel
+
+2nd animal flags:
+Bit 00 - Caterpillar
+Bit 01 - Armadillo
+Bit 02 - Bat
+Bit 03 - Egg
+
+Inventory flags structure:
+Bit 08 - Bronze medal
+Bit 09 - Silver medal
+Bit 10 - Gold medal
+Bit 11 - Holy sword
+Bit 12 - Giant plant seed
+Bit 13 - Magic shoes
+Bit 14 - Awakening powder
+Bit 15 - Mother monster horn
+
+Checksum calculation:
+for (int i = 1; i < 340; i+=4)
+{
+	Checksum += (SaveData[i] << 8 | SaveData[i+2]);
+	Checksum &= 0xFFFF;
+}

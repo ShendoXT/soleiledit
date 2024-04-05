@@ -5,8 +5,6 @@ name: Build, Test and Package .NET Project release
 
 on:
   push:
-    branches:
-      - fix-release
     tags:
       - '*'
 
@@ -32,19 +30,9 @@ jobs:
       - name: Build solution
         run: msbuild SoleilEdit.sln -t:rebuild -property:Configuration=Release
 
-      - name: List files
-        run: |
-          echo "List files in current directory:"
-          dir
-
       - name: Package Release
         run: |
           Compress-Archive -Path ./SoleilEdit/bin/Release/*, ./SoleilEdit/Docs/*, ./SoleilEdit/app.config, ./LICENSE, ./README.md -DestinationPath ./SoleilEdit.zip
-
-      - name: foo failure
-        run: |
-          dir
-          dir foo
 
       - name: Create Release
         id: create_release

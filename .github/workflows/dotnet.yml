@@ -39,7 +39,7 @@ jobs:
 
       - name: Package Release
         run: |
-          Compress-Archive -Path ./bin/Release/*, ./Docs/*, ./app.config, ./LICENSE, ./README.md -DestinationPath ./SoleilEdit.zip
+          Compress-Archive -Path ./SoleilEdit/bin/Release/*, ./SoleilEdit/Docs/*, ./SoleilEdit/app.config, ./SoleilEdit/LICENSE, ./SoleilEdit/README.md -DestinationPath ./SoleilEdit.zip
 
       - name: foo failure
         run: |

@@ -1,7 +1,7 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: Build and Test .NET Project
+name: Build, Test and Package .NET Project release
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
       - build
 
 jobs:
-  build:
+  build_and_release:
     runs-on: windows-2019
     steps:
       - name: Checkout code
@@ -35,34 +35,9 @@ jobs:
       - name: Build solution
         run: msbuild SoleilEdit.sln -t:rebuild -property:Configuration=Release
 
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: drop
-          path: |
-            **/*.exe
-            **/*.dll
-            SoleilEdit/Docs/*
-            SoleilEdit/app.config
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: drop
-
-      - name: List files
+      - name: Package Release
         run: |
-          echo "List files in current directory:"
-          ls -l SoleilEdit/
-
-      - name: List dir files
-        run: |
-          echo "List files in drop directory:"
-          ls -R ./drop
+          Compress-Archive -Path ./bin/Release/*, ./Docs/*, ./app.config -DestinationPath ./SoleilEdit.zip
 
       - name: Create Release
         id: create_release
@@ -70,8 +45,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: 0.1.0
-          release_name: Release 0.1.0
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
 
@@ -82,26 +57,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./drop/SoleilEdit.exe
-          asset_name: SoleilEdit.exe
-          asset_content_type: application/octet-stream
-
-      - name: Upload Additional Assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./drop/SoleilEdit/Docs
-          asset_name: Docs
+          asset_path: ./SoleilEdit.zip
+          asset_name: SoleilEdit.zip
           asset_content_type: application/zip
-
-      - name: Upload Additional Assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./drop/SoleilEdit/app.config
-          asset_name: app.config
-          asset_content_type: text/xml

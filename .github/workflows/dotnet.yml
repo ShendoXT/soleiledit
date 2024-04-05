@@ -5,16 +5,11 @@ name: Build, Test and Package .NET Project release
 
 on:
   push:
-    branches:
-      - master
-      - build
-  pull_request:
-    branches:
-      - master
-      - build
+    tags:
+      - '*'
 
 jobs:
-  build_and_release:
+  build:
     runs-on: windows-2019
     steps:
       - name: Checkout code
@@ -37,8 +32,7 @@ jobs:
 
       - name: Package Release
         run: |
-          dir
-          Compress-Archive -Path ./SoleilEdit/bin/Release/*, ./SoleilEdit/Docs/*, ./SoleilEdit/app.config -DestinationPath ./SoleilEdit.zip
+          Compress-Archive -Path ./SoleilEdit/bin/Release/*, ./SoleilEdit/Docs/*, ./SoleilEdit/app.config, ./SoleilEdit/LICENSE, ./SoleilEdit/README.md -DestinationPath ./SoleilEdit.zip
 
       - name: Create Release
         id: create_release

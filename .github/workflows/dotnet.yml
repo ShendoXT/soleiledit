@@ -57,7 +57,7 @@ jobs:
       - name: List files
         run: |
           echo "List files in current directory:"
-          ls -l
+          ls -l SoleilEdit/
 
       - name: List dir files
         run: |

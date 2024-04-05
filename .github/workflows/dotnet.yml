@@ -56,6 +56,11 @@ jobs:
 
       - name: List files
         run: |
+          echo "List files in current directory:"
+          ls -l
+
+      - name: List dir files
+        run: |
           echo "List files in drop directory:"
           ls -R ./drop
 

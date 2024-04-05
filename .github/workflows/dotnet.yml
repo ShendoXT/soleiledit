@@ -5,6 +5,8 @@ name: Build, Test and Package .NET Project release
 
 on:
   push:
+    branches:
+      - fix-release
     tags:
       - '*'
 

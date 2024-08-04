@@ -1,6 +1,6 @@
 ﻿//SoleilEdit
 //Soleil/Crusader of Centy/Ragnacenty save editor
-//Shendo 2011 - 2012
+//Shendo 2011 - 2024
 
 using System;
 using System.Collections.Generic;
@@ -17,9 +17,9 @@ namespace SoleilEdit
     {
         //Application related strings
         const string ApplicationName = "SoleilEdit";
-        const string ApplicationVersion = "1.0";
+        const string ApplicationVersion = "1.1";
         const string ApplicationAuthor = "Shendo";
-        const string ApplicationDate = "2012-06-30";
+        const string ApplicationDate = "2024-08-04";
 
         //File data
         string OpenedFileName = null;
@@ -40,7 +40,7 @@ namespace SoleilEdit
         }
 
         //Container for save data
-        byte[] SaveData = new byte[0x3200];
+        byte[] SaveData = new byte[16384];
 
         //Game supports 4 save slots
         SaveSlot[] SaveSlots = new SaveSlot[4];
@@ -92,7 +92,7 @@ namespace SoleilEdit
             if (OpenDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
 
             //Check the size of a file
-            if ((new FileInfo(OpenDialog.FileName)).Length < 12300) return;
+            if ((new FileInfo(OpenDialog.FileName)).Length < 512) return;
 
             OpenedFileName = OpenDialog.FileName;
             OpenedFileTitle = Path.GetFileName(OpenedFileName);
